@@ -1,0 +1,5 @@
+*.o
+dcl
+*.test
+*.swp
+*.out
