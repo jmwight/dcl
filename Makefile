@@ -1,9 +1,18 @@
-OBJ = getch.o dcl.o gettoken.o
+OBJ = getch.o gettoken.o
 
-dcl: $(OBJ)
-	cc -o dcl $(OBJ)
+.PHONY: all
+all:
+	make dcl undcl
 
-dcl.o: getch.h
+undcl: $(OBJ) undcl.o
+	cc -o undcl $(OBJ) undcl.o
+
+dcl: $(OBJ) dcl.o
+	cc -o dcl $(OBJ) dcl.o
+
+undcl.o: gettoken.h
+
+dcl.o: gettoken.h
 
 gettoken.o: gettoken.h getch.h
 
@@ -11,4 +20,4 @@ getch.o:
 
 .PHONY: clean
 clean:
-	rm -rf dcl *.o
+	rm -rf dcl undcl *.o
