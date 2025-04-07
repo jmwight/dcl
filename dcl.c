@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "gettoken.h"
+#include "getch.h"
 
 #define MAXOUT		1000
 
@@ -17,12 +18,20 @@ int main(void) /* convert declarations to words */
 	/* 1st token on line is the datatype */
 	while(gettoken() != EOF) 
 	{
+		while(tokentype == '\n')
+			gettoken();
 		strcpy(datatype, token);
 		out[0] = '\0';
 		dcl(); /* parse rest of line */
 		if(tokentype != '\n')
+		{
 			printf("syntax error\n");
-		printf("%s: %s %s\n", name, out, datatype);
+			/* skip over rest of line */
+			while(getch() != '\n')
+				;
+		}
+		else
+			printf("%s: %s %s\n", name, out, datatype);
 	}
 	return 0;
 }
