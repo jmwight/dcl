@@ -3,7 +3,7 @@
 
 #define MAXTOKEN	100
 
-enum { NAME, PARENS, BRACKETS };
+enum { NAME, PARENS, BRACKETS, PARAMS};
 
 extern int gettoken(void);
 

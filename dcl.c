@@ -78,6 +78,8 @@ void dirdcl(void)
 	while((type=gettoken()) == PARENS || type == BRACKETS)
 		if(type == PARENS)
 			strcat(out, " function returning");
+		else if(type == PARAMS)
+			strcat(out, " function with parameters (%s) returning");
 		else
 		{
 			strcat(out, " array");

@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 int contains(void *el, void *a, int layers, size_t nmem, size_t width, int (*eqcomp)(void *, void *))
 {
 	while(nmem-- > 0)
@@ -26,8 +29,7 @@ int contains(void *el, void *a, int layers, size_t nmem, size_t width, int (*eqc
 		{
 			printf("Error: invalid number of layers\n");
 			return 0;
-		}
-			
+		}	
 
 	}
 	return 0;
