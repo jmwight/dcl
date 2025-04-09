@@ -12,11 +12,13 @@ dcl: $(OBJ) dcl.o
 
 undcl.o: gettoken.h
 
-dcl.o: gettoken.h
+dcl.o: gettoken.h contains.h
 
 gettoken.o: gettoken.h getch.h
 
 getch.o: 
+
+contains.o: 
 
 .PHONY: clean
 clean:

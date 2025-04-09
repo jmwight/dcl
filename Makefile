@@ -1,4 +1,4 @@
-OBJ = getch.o gettoken.o
+OBJ = getch.o gettoken.o contains.o
 ARG = -g3
 
 .PHONY: all
@@ -14,7 +14,7 @@ dcl: $(OBJ) dcl.o
 undcl.o: gettoken.h undcl.c
 	cc $(ARG) -c undcl.c
 
-dcl.o: gettoken.h dcl.c
+dcl.o: gettoken.h dcl.c contains.h
 	cc $(ARG) -c dcl.c
 
 gettoken.o: gettoken.c gettoken.h getch.h
@@ -22,6 +22,9 @@ gettoken.o: gettoken.c gettoken.h getch.h
 
 getch.o: getch.c
 	cc $(ARG) -c getch.c
+
+contains.o: contains.c
+	cc $(ARG) -c contains.c
 
 .PHONY: clean
 clean:
