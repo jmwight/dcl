@@ -57,7 +57,7 @@ int gettoken(void)
 		{
 			while(i-- > 0)
 			{
-				ungetch(*p--);
+				ungetch(*--p);
 			}
 			return tokentype = '(';
 		}
