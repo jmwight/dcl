@@ -75,11 +75,15 @@ void dirdcl(void)
 		strcpy(name, token);
 	else
 		printf("error: expected name or (dcl)\n");
-	while((type=gettoken()) == PARENS || type == BRACKETS)
+	while((type=gettoken()) == PARENS || type == BRACKETS || type == PARAMS)
 		if(type == PARENS)
 			strcat(out, " function returning");
 		else if(type == PARAMS)
-			strcat(out, " function with parameters (%s) returning");
+		{
+			strcat(out, " function with parameters (");
+			strcat(out, token);
+			strcat(out, ") returning");
+		}
 		else
 		{
 			strcat(out, " array");

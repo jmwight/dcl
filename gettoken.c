@@ -37,17 +37,17 @@ int gettoken(void)
 			return tokentype = PARENS;
 		}
 		/* test if there what is inside isn't a dcl but function parameters */
-		ungetch(c);
 		int i;
-		for(*p++ = c, i = 0; isalnum(c = getch()); ++i)
+		for(*p++ = c, i = 1; isalpha(c = getch()); ++i)
 			*p++ = c;
+		ungetch(c);
 		*p = '\0';
 		/* check if it's a datatype. If so we have a function parameter, not a dcl */
-		if(contains((void*) p, (void*) datatypes, 1, 
+		if(contains((void*) token, (void*) datatypes, 1, 
 	   	   sizeof(datatypes)/sizeof(char*), sizeof(char), (int (*)(void*, void*))(*streq)))
 		{
 			/* get rest of function parameters */
-			for(*p++ = c; (c = getch()) != ')'; )
+			while((c = getch()) != ')')
 				*p++ = c;
 			*p = '\0';
 			return tokentype = PARAMS;
@@ -55,7 +55,7 @@ int gettoken(void)
 		/* it's not function parameters, rewind what we did above if statement */
 		else
 		{
-			while(i > 0)
+			while(i-- > 0)
 			{
 				ungetch(*p--);
 			}
@@ -74,15 +74,6 @@ int gettoken(void)
 		for(*p++ = c; isalnum(c = getch()); )
 			*p++ = c;
 		*p = '\0';
-		if(contains((void*) p, (void*) datatypes, 1, 
-		   sizeof(datatypes)/sizeof(char*), sizeof(char), (int (*)(void*, void*))(*streq)))
-		{
-			for(*p++ = c; isalnum(c = getch()); )
-				*p++ = c;
-			*p = '\0';
-			return tokentype = PARAMS;
-
-		}
 		ungetch(c);
 		return tokentype = NAME;
 	}
