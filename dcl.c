@@ -2,6 +2,7 @@
 #include <string.h>
 #include "gettoken.h"
 #include "getch.h"
+#include "contains.h"
 
 #define MAXOUT		1000
 
@@ -18,9 +19,20 @@ int main(void) /* convert declarations to words */
 	/* 1st token on line is the datatype */
 	while(gettoken() != EOF) 
 	{
-		while(tokentype == '\n')
+		datatype[0] = '\0'; /* clear string */
+		while(tokentype == '\n') /* skip over blank lines */
 			gettoken();
-		strcpy(datatype, token);
+		/* scan for possible qualifers */
+		static const char *qualifiers[] = {"const", "static", "unsigned", "signed", "volatile", "register", "auto"};
+		for( ; contains((void*) token, (void*) qualifiers, 1, 7, sizeof(char), (int (*)(void*, void*))(streq)); gettoken())
+		{
+			strcat(datatype, token);
+			datatype[strlen(datatype) + 1] = '\0';
+			datatype[strlen(datatype)] = ' ';
+		}
+
+
+		strcat(datatype, token);
 		out[0] = '\0';
 		dcl(); /* parse rest of line */
 		if(tokentype != '\n')
@@ -63,9 +75,15 @@ void dirdcl(void)
 		strcpy(name, token);
 	else
 		printf("error: expected name or (dcl)\n");
-	while((type=gettoken()) == PARENS || type == BRACKETS)
+	while((type=gettoken()) == PARENS || type == BRACKETS || type == PARAMS)
 		if(type == PARENS)
 			strcat(out, " function returning");
+		else if(type == PARAMS)
+		{
+			strcat(out, " function with parameters (");
+			strcat(out, token);
+			strcat(out, ") returning");
+		}
 		else
 		{
 			strcat(out, " array");
